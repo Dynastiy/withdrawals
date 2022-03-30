@@ -39,9 +39,9 @@ import Swal from 'sweetalert2'
 export default {
     methods:{
         async logout() {
-          this.$store.dispatch('logout');
+         
           let res = await this.$axios.post('auth/token/logout')
-      
+       this.$store.dispatch('logout');
       Swal.fire(
           'Bye!',
           'Logged out!',

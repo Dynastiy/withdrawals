@@ -97,6 +97,7 @@ export default {
   },
   methods: {
     async login() {
+      this.loading = true
       const credentials = {
         username: this.username,
         password: this.password,
@@ -135,6 +136,7 @@ export default {
         this.username = "";
         this.password = "";
       }
+      this.loading = false;
     },
   },
   async created() {
@@ -171,7 +173,7 @@ export default {
   width: 13px;
   height: 13px;
   border-radius: 50%;
-  background: var(--);
+  background: var(--main-color);
   animation-timing-function: cubic-bezier(0, 1, 1, 0);
 }
 .lds-ellipsis div:nth-child(1) {

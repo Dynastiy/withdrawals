@@ -16,12 +16,12 @@
         </td>
       </tr>
       <tr v-for="withdrawal in withdrawals" :key="withdrawal.id">
-        <td data-th="id" >   </td>
+        <td data-th="id" > {{ withdrawal.id }}  </td>
         <td data-th="Merchant" v-if="withdrawal.merchant"> {{ withdrawal.merchant.business_name }} </td>
         <td data-th="Amount"> {{ withdrawal.amount }}{{ withdrawal.currency }} </td>
-        <td data-th="Date"> {{withdrawal.created_at}} </td>
+        <td data-th="Date"> {{timeStamp(withdrawal.created_at)}} </td>
         <td data-th="Status"><span :class="[withdrawal.status]">{{withdrawal.status}}</span></td>
-        <td data-th="Actions"> <px-button><span>View More</span></px-button> </td>
+        <td data-th="Actions"> <px-button @click="goToWithdrawal(withdrawal.id)"><span>View More</span></px-button> </td>
       </tr>
     </table>
   </div>
@@ -29,12 +29,14 @@
 
 <script>
 import PxButton from '@/components/pxButton.vue'
+import { dollarFilter, timeStamp, sliceHash } from "@/plugins/filters.js";
 export default {
     components: {
         PxButton
     },
     data:()=>{
       return{
+        dollarFilter, timeStamp, sliceHash,
         withdrawals: []
       }
     },
@@ -47,6 +49,9 @@ export default {
        } catch (error) {
          console.log(error);
        }
+      },
+      goToWithdrawal(id){
+         this.$router.push({ name: 'id', params: { id } })
       }
     },
     async created(){

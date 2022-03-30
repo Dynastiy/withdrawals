@@ -46,13 +46,13 @@ instance.interceptors.response.use(function(response) {
 
     // console.log(error);
     // console.log(error.response.data.detail);
-    // Toastify({
-    //     text: error.response.data.detail,
-    //     className: "info",
-    //     style: {
-    //         background: "red",
-    //     }
-    // }).showToast();
+    Toastify({
+        text: error.response.data.detail,
+        className: "info",
+        style: {
+            background: "red",
+        }
+    }).showToast();
 
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
