@@ -2,9 +2,6 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
-// import Axios from 'axios'
-
-// Axios.defaults.headers.common['Authorization'] = `token ${store.state.token}`;
 
 
 import '@/assets/css/main.css'

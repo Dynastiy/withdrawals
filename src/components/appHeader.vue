@@ -14,7 +14,7 @@
       <aside class="sidebar" id="side-bar">
         <nav class="sidebar__menu">
             <a href="javascript:void(0)" class="d-block text-right">
-                <span class="material-icons">
+                <span class="material-icons" id="close-menu">
                 close
                 </span>
             </a>
@@ -38,14 +38,17 @@
 import Swal from 'sweetalert2'
 export default {
     methods:{
-        logout() {
-      this.$store.dispatch('logout');
+        async logout() {
+          this.$store.dispatch('logout');
+          let res = await this.$axios.post('auth/token/logout')
+      
       Swal.fire(
           'Bye!',
           'Logged out!',
           'warning'
         )
       this.$router.push('/sign-in');
+      return res
     }
     },
     mounted(){

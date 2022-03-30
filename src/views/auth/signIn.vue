@@ -1,61 +1,71 @@
 <template>
   <div>
     <div class="loading" v-if="loading">
-      <div class="lds-ellipsis"><div></div><div></div><div></div>
+      <div class="lds-ellipsis">
+        <div></div>
+        <div></div>
+        <div></div>
       </div>
     </div>
     <div class="limiter">
       <div class="container-login100">
         <div class="wrap-login100 p-l-60 p-r-60 p-t-30 p-b-30 shadow-lg">
-          <form
-            class="login100-form validate-form"
-            @submit.prevent="login"
-          >
-           <div class="text-center m-b-20">
-                <img  src="@/assets/logo.svg" width="40" alt="" />
-           </div>
-            <span class="login100-form-title text-center p-b-30">
-               Login
-            </span>
+          <form class="login100-form validate-form" @submit.prevent="login">
+            <div class="text-center m-b-20">
+              <img src="@/assets/logo.svg" width="40" alt="" />
+            </div>
+            <span class="login100-form-title text-center p-b-30"> Login </span>
 
-           <div class="m-b-20">
+            <div class="m-b-20">
               <span class="txt1 p-b-11"> Username </span>
-            <div
-              class="wrap-input100 validate-input"
-              data-validate="Username is required"
-            >
-              <input
-                class="input100"
-                type="text"
-                name="text"
-                v-model="email"
-              />
-              <span class="focus-input100"></span>
-            </div>
-            <div v-show="error_msgs.email">
-                <span class="small text-danger" v-for="error in error_msgs.email" :key="error.id"> *{{ error }} </span>
+              <div
+                class="wrap-input100 validate-input"
+                data-validate="Username is required"
+              >
+                <input
+                  class="input100"
+                  type="text"
+                  name="username"
+                  v-model="username"
+                />
+                <span class="focus-input100"></span>
               </div>
-           </div>
+              <div v-show="error_msgs.email">
+                <span
+                  class="small text-danger"
+                  v-for="error in error_msgs.email"
+                  :key="error.id"
+                >
+                  *{{ error }}
+                </span>
+              </div>
+            </div>
 
-           <div class="m-b-20">
+            <div class="m-b-20">
               <span class="txt1 p-b-11"> Password </span>
-            <div
-              class="wrap-input100 validate-input"
-              data-validate="Password is required"
-            >
-              <input
-                class="input100"
-                type="password"
-                name="pass"
-                v-model="password"
-              />
-              <span class="focus-input100"></span>
-              <div v-show="error_msgs.password">
-                <span class="small text-danger" v-for="error in error_msgs.password" :key="error.id"> *{{ error }} </span>
+              <div
+                class="wrap-input100 validate-input"
+                data-validate="Password is required"
+              >
+                <input
+                  class="input100"
+                  type="password"
+                  name="pass"
+                  v-model="password"
+                />
+                <span class="focus-input100"></span>
+                <div v-show="error_msgs.password">
+                  <span
+                    class="small text-danger"
+                    v-for="error in error_msgs.password"
+                    :key="error.id"
+                  >
+                    *{{ error }}
+                  </span>
+                </div>
               </div>
             </div>
-           </div>
-           <!-- <div class="text-right pb-1">
+            <!-- <div class="text-right pb-1">
             <span class=""> <router-link to="/forgot-password" class="text-info font-weight-bold">Forgot Password?</router-link> </span>
           </div>  -->
             <div class="container-login100-form-btn">
@@ -73,71 +83,77 @@
 
 <script>
 // import helpers from "@/helpers/index";
-import Swal from 'sweetalert2'
+import Swal from "sweetalert2";
+import axios from "axios";
 export default {
   data() {
     return {
-      email: "",
+      username: "",
       password: "",
       msg: "",
       loading: false,
-      error_msgs: '',
+      error_msgs: "",
     };
   },
   methods: {
     async login() {
-      this.loading = true;
+      const credentials = {
+        username: this.username,
+        password: this.password,
+      };
       try {
-        const credentials = {
-          username: this.email,
-          password: this.password,
-        };
-        const response = await this.$axios.post('/auth/token/login', credentials);
-        console.log(response.data.auth_token);
-        const token = response.data.auth_token;
-        const user = response.user;
-        console.log(response.user);
-        this.$store.dispatch("login", { token, user });
-        Swal.fire(
-          'Welcome!',
-          'Login Successful!',
-          'success'
-        )
-        this.loading = false
-        this.$router.push("/");
+        const res = await axios.post(
+          "https://dev.szcmerchant.com/api/auth/token/login/",
+          credentials
+        );
+        const token = res.data.auth_token;
+        console.log(token);
+        this.$store.dispatch("login", { token });
+        const resp = await axios.get("https://dev.szcmerchant.com/api/auth/users/me", 
+        {
+          headers: {
+            Authorization: `Token ${token}`,
+          },
+        }
+        );
+        const user = resp.data;
+        console.log(user);
+        if (user.is_staff === true) {
+          Swal.fire("Welcome!", "Login Successful!", "success");
+          
+          this.$router.push("/");
+          this.username = "";
+          this.password = "";
+        } else {
+          Swal.fire("Error!", "Access Denied!", "warning");
+          this.username = "";
+          this.password = "";
+        }
       } catch (error) {
-        console.log(error.response.data.message);
-        console.log(error.response.data.error);
-        this.error_mgs = error.response.data.error
-        let msg = error.response.data.message
-         Swal.fire(
-          'Chill!',
-          msg,
-          'warning'
-        )
-        this.email = '';
-        this.password = ''
-        this.loading = false
+        // console.log(error);
+        Swal.fire("Error!", "Access Denied!", "warning");
+        this.username = "";
+        this.password = "";
       }
     },
   },
   async created() {
     if (this.$store.getters.isLoggedIn) {
-      this.$router.push('/');
+      this.$router.push("/");
     }
-   }
-}
+  },
+};
 </script>
 
 <style scoped>
-@import url('@/assets/css/util.css'); 
+@import url("@/assets/css/util.css");
 /*---------------------------------------------*/
 /* Loader  */
 .loading {
   position: fixed;
   min-height: 100vh;
   width: 100%;
-  background-color: var(--light-color);
+  background-color: var(--accent-color-light);
   z-index: 999;
   display: flex;
   justify-content: center;

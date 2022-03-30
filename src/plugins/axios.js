@@ -15,7 +15,7 @@ const instance = axios.create({
         // "Access-Control-Allow-Origin": "*",
         // "Access-Control-Allow-Headers": "*",
         // "Access-Control-Allow-Methods": 'GET, HEAD, PUT, PATCH, POST, DELETE'
-        Authorization: `token ${store.state.token}`
+        "Authorization": `Token ${store.state.token}`
     }
 });
 
@@ -23,7 +23,13 @@ const instance = axios.create({
 instance.interceptors.request.use(function(config) {
     // Do something before request is sent
     // alert("requesting")
-    console.log(` ${store.state.token}`);
+    console.log(`${store.state.token}`);
+    const token = `${store.state.token}`;
+
+    if (token) {
+        config.headers['Authorization'] = `Token ${store.state.token}`;
+    }
+
     return config;
 }, function(error) {
     // Do something with request error
@@ -37,19 +43,21 @@ instance.interceptors.response.use(function(response) {
     // Do something with response data
     return response;
 }, function(error) {
-    console.log(error);
-    console.log(error.response.data.detail);
-    Toastify({
-        text: error.response.data.detail,
-        className: "info",
-        style: {
-            background: "red",
-        }
-    }).showToast();
+
+    // console.log(error);
+    // console.log(error.response.data.detail);
+    // Toastify({
+    //     text: error.response.data.detail,
+    //     className: "info",
+    //     style: {
+    //         background: "red",
+    //     }
+    // }).showToast();
 
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
     return Promise.reject(error);
+    // return error
 });
 
 export default instance
