@@ -8,15 +8,15 @@
                     close
                 </span>
             </div>
-          <h3 class="font-weight-bold">{{ action }} Withdrawal Request</h3>
+          <h3 class="font-weight-bold"> Withdrawal Request</h3>
           <div>
             <div class="d-flex mb-1" style="gap: 5px">
               <h6 class="font-weight-bold">Merchant:</h6>
-              <p v-if="meta.merchant"> {{ meta.merchant.business_name }} </p>
+              <p v-if="withdrawal.merchant"> {{ withdrawal.merchant.business_name }} </p>
             </div>
             <div class="d-flex" style="gap: 5px">
               <h6 class="font-weight-bold">Amount:</h6>
-              <p> {{ meta.amount }}{{ meta.currency }} </p>
+              <p> &#8358; {{ withdrawal.amount }} </p>
             </div>
           </div>
 
@@ -54,7 +54,7 @@
 
 <script>
 export default {
-    props:['meta', 'action'],
+    // props:["meta", "action"],
   data() {
     return {
         image: null
@@ -72,8 +72,17 @@ export default {
         preview.style.display = "block";
       }
     },
-    closeBtn() {
-      this.$emit('close')
+    async getWithdrawal() {
+      try {
+        let res = await this.$axios.get(
+          "/merchants/admin/withdrawal-requests/" + this.id
+        );
+        console.log(res.data);
+        this.withdrawal = res.data;
+      this.meta = res.data
+      } catch (error) {
+        console.log(error);
+      }
     },
   },
 };

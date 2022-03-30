@@ -18,7 +18,7 @@
       <tr v-for="withdrawal in withdrawals" :key="withdrawal.id">
         <td data-th="id" > {{ withdrawal.id }}  </td>
         <td data-th="Merchant" v-if="withdrawal.merchant"> {{ withdrawal.merchant.business_name }} </td>
-        <td data-th="Amount"> {{ withdrawal.amount }}{{ withdrawal.currency }} </td>
+        <td data-th="Amount">&#8358; {{ withdrawal.amount }}</td>
         <td data-th="Date"> {{timeStamp(withdrawal.created_at)}} </td>
         <td data-th="Status"><span :class="[withdrawal.status]">{{withdrawal.status}}</span></td>
         <td data-th="Actions"> <px-button @click="goToWithdrawal(withdrawal.id)"><span>View More</span></px-button> </td>

@@ -6,8 +6,8 @@
       <div class="">
          <router-link to="/"> <img src="@/assets/logo.svg" width="30" alt=""></router-link>
       </div>
-<label for="menu-control" class="hamburger ml-auto" >
-        <span class="material-icons" id="tog" style="font-size: 30px">
+<label for="menu-control" class="hamburger ml-auto" style="" >
+        <span class="material-icons" id="tog" style="font-size: 30px;">
             menu
         </span>
       </label>
@@ -19,9 +19,9 @@
                 </span>
             </a>
           <router-link to="/">All Transactions</router-link>
-          <router-link to="/pending-transactions">Pending Transactions</router-link>
+          <!-- <router-link to="/pending-transactions">Pending Transactions</router-link>
           <router-link to="approved-transactions">Approved Transactions</router-link>
-          <router-link to="declined-transactions">Declined Transactions</router-link>
+          <router-link to="declined-transactions">Declined Transactions</router-link> -->
           <a href="javascript:void(0)" @click="logout">Logout</a>
         </nav>
 
