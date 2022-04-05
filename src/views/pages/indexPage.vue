@@ -52,12 +52,14 @@
     </table>
     <!-- Pagination -->
     <div class="text-right">
-      <!-- <div class="btn-group">
-        <button type="button" class="btn btn-sm btn-outline-secondary" v-if="page != 1" @click="reducePage"> Back </button>
-        <button type="button" class="btn btn-sm btn-outline-secondary" v-for="(pageNumber, index) in pages.slice(page-1, page)" :key="index" @click="page = pageNumber"> {{pageNumber}} </button>
-        <span> {{ page }} of {{ pages.length }} </span>
-        <button type="button" @click="addPage" v-if="page < pages.length" class="btn btn-sm btn-outline-secondary"> >> </button>
-    </div> -->
+      <div class="d-flex justify-content-end" style="gap:10px">
+        <!-- <button type="button" class="btn btn-sm btn-outline-secondary" v-if="page != 1" @click="reducePage"> Back </button>
+        <button type="button" class="btn btn-sm btn-outline-secondary" v-for="(pageNumber, index) in pages.slice(page-1, page+2)" :key="index" @click="page = pageNumber"> {{pageNumber}} </button>
+        <button type="button" @click="addPage" v-if="page < pages.length" class="btn btn-sm btn-outline-secondary"> >> </button> -->
+        <button class="page" @click="reducePage" v-if="page != 1">Back</button>
+        <span class="page"> Page {{ page }} of {{ numberOfPages }} </span>
+        <button class="page" @click="addPage" v-if="page < numberOfPages "> Next </button>
+    </div>
     </div>
   </div>
 </template>
@@ -111,7 +113,7 @@ export default {
       this.getWithdrawals()
     },
     goToWithdrawal(id) {
-      this.$router.push({ path: "id", params: { id } });
+      this.$router.push({ name: "id", params: { id } });
     },
     setPages() {
       // let numberOfPages = Math.round(this.pagingValues.count / this.perPage);
