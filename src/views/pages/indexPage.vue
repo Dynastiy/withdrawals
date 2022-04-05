@@ -17,7 +17,7 @@
         <th>Id</th>
         <th>Merchant</th>
         <th>Amount</th>
-        <!-- <th>Date</th> -->
+        <th>Date</th>
         <th>Status</th>
         <th>Actions</th>
       </tr>
