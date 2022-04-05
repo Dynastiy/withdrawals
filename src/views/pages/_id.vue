@@ -18,7 +18,7 @@
           class="my-4 d-flex align-items-center"
           v-if="withdrawal.status === 'approved'"
         >
-          <span class="material-icons text-successmr-2" style="font-size: 36px">
+          <span class="material-icons text-success mr-2" style="font-size: 36px">
             check_circle
           </span>
           Transaction is Approved
@@ -27,7 +27,7 @@
           class="my-4 d-flex align-items-center"
           v-if="withdrawal.status === 'declined'"
         >
-          <span class="material-icons text-dangermr-2" style="font-size: 36px">
+          <span class="material-icons text-danger mr-2" style="font-size: 36px">
             cancel
           </span>
           Transaction is Declined
@@ -139,7 +139,9 @@
                     </p>
                   </div>
                   <hr />
-                  <div class="d-flex justify-content-end" style="gap: 8px" v-if="withdrawal.status == 'pending' ">
+                  <!-- <div class="d-flex justify-content-end" style="gap: 8px" v-if="withdrawal.status == 'pending' "> -->
+                    
+                  <div class="d-flex justify-content-end" style="gap: 8px" >
                     <button
                       @click="approveWithdrawal"
                       class="approved border-0 shadow-sm"
@@ -266,24 +268,9 @@ export default {
       this.withdrawal_modal = false;
     },
     async complete() {
-      if (this.action === "Approve") {
+      if (this.action === "Decline") {
         try {
-          let payload ={
-            payment_proof: this.image,
-            status: 'approved'
-          }
-          let res = await this.$axios.patch(
-            "/merchants/admin/withdrawal-requests/" + this.id,
-            payload
-          );
-          console.log(res.data);
-          this.getWithdrawal();
-        } catch (error) {
-          console.log(error);
-        }
-      } else {
-        try {
-          let payload ={
+          const payload = {
             note: this.note,
             status: 'declined'
           }
@@ -291,8 +278,28 @@ export default {
             "/merchants/admin/withdrawal-requests/" + this.id,
             payload
           );
+          console.log(payload);
           console.log(res.data);
           this.getWithdrawal();
+          this.withdrawal_modal = false
+        } catch (error) {
+          console.log(error);
+        }
+      } else {
+        try {
+          const payload = {
+            status: 'approved',
+             payment_proof: this.image,
+            
+          }
+          let res = await this.$axios.patch(
+            "/merchants/admin/withdrawal-requests/" + this.id,
+            payload
+          );
+          console.log(res.data);
+          console.log(payload);
+          this.getWithdrawal();
+          this.withdrawal_modal = false
         } catch (error) {
           console.log(error);
         }

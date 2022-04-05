@@ -434,6 +434,15 @@ label {
     font-weight: bold;
 }
 
+.page {
+    background-color: var(--accent-color-light);
+    border: none;
+    padding: 0.3rem 0.6rem;
+    border: 1px solid var(--accent-color-light);
+    font-size: 14px;
+    border-radius: 5px;
+}
+
 @media screen and (max-width: 425px) {
     .iconns {
         font-size: 6rem;
