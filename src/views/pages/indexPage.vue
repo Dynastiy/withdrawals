@@ -34,11 +34,11 @@
         <td  v-if="withdrawals.length == 0" class="text-danger font-weight-bold">No Withdrawal requests yet</td>
       <!-- </tr> -->
         <td data-th="id">{{ withdrawal.id }}</td>
-        <td data-th="Merchant" v-if="withdrawal.merchant">
+        <td data-th="Merchant" class="merchant--name" v-if="withdrawal.merchant">
           {{ withdrawal.merchant.business_name }}
         </td>
-        <td data-th="Amount">&#8358; {{ withdrawal.amount }}</td>
-        <!-- <td data-th="Date">{{ new Date(withdrawal.created_at * 1000).toISOString().substr(11, 8) }}</td> -->
+        <td data-th="Amount">&#8358; {{ currencyFilter(withdrawal.amount) }}</td>
+        <td data-th="Date">{{ timeStamp(new Date(withdrawal.created_at*1000.0))}}</td>
         
         <td data-th="Status">
           <span :class="[withdrawal.status]">{{ withdrawal.status }}</span>
@@ -67,7 +67,7 @@
 <script>
 import PxButton from "@/components/pxButton.vue";
 // import pagination from "@/components/paginationComponent.vue";
-import { dollarFilter, timeStamp, sliceHash } from "@/plugins/filters.js";
+import { currencyFilter, timeStamp, sliceHash } from "@/plugins/filters.js";
 export default {
   components: {
     PxButton,
@@ -75,7 +75,7 @@ export default {
   },
   data: () => {
     return {
-      dollarFilter,
+      currencyFilter,
       timeStamp,
       sliceHash,
       withdrawals: [],
@@ -137,7 +137,7 @@ export default {
 
   computed: {
     numberOfPages(){
-      return  Math.round(this.pagingValues.count / this.perPage);
+      return  Math.ceil(this.pagingValues.count / this.perPage);
       // for (let index = 1; index <= numberOfPages; index++) {
       //   this.pages.push(index);
       // }

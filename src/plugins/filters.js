@@ -5,7 +5,7 @@ import moment from 'moment';
 
 const timeStamp = (value) => {
     if (value) {
-        return moment(String(value)).format('D m y ')
+        return moment(String(value)).format('DD MMMM YY')
     }
 }
 
@@ -17,12 +17,12 @@ const timeRange = (value) => {
 
 }
 
-const dollarFilter = (value) => {
+const currencyFilter = (value) => {
     if (!value) {
-        return '$ 0'
+        return '0'
     }
 
-    return numeral(value).format('($ 0.000000000a)')
+    return numeral(value).format('(0.00)')
 }
 
 
@@ -49,4 +49,4 @@ const percentageFilter = (value) => {
     return !value ? '0%' : `${Number(value).toFixed(2) * 100}%`
 }
 
-export { dollarFilter, percentFilter, percentageFilter, timeStamp, timeRange, dollarFilter2, sliceHash, sliceHash2 }
+export { currencyFilter, percentFilter, percentageFilter, timeStamp, timeRange, dollarFilter2, sliceHash, sliceHash2 }

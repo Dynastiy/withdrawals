@@ -51,7 +51,7 @@
               <!-- <h6 class="text-muted text-uppercase">
               RE1344523
             </h6> -->
-              <h6 class="text-dark col-md">&#8358; {{ withdrawal.amount }}</h6>
+              <h6 class="text-dark col-md">&#8358; {{ currencyFilter(withdrawal.amount) }}</h6>
             </div>
             <div class="card-body">
               <div
@@ -87,7 +87,7 @@
                   >
                     <h6 class="subb">Amount</h6>
                     <p class="subb text-muted text-right">
-                      &#8358; {{ withdrawal.amount }}
+                      &#8358; {{ currencyFilter(withdrawal.amount) }}
                     </p>
                   </div>
                   <hr />
@@ -141,7 +141,7 @@
                   <hr />
                   <!-- <div class="d-flex justify-content-end" style="gap: 8px" v-if="withdrawal.status == 'pending' "> -->
                     
-                  <div class="d-flex justify-content-end" style="gap: 8px" >
+                  <div class="d-flex justify-content-end" style="gap: 8px" v-if="withdrawal.status === 'pending'">
                     <button
                       @click="approveWithdrawal"
                       class="approved border-0 shadow-sm"
@@ -221,10 +221,12 @@
 
 
 <script>
+import { currencyFilter, timeStamp, sliceHash } from "@/plugins/filters.js";
 export default {
   components: {},
   data() {
     return {
+      currencyFilter, timeStamp, sliceHash,
       withdrawal: {},
       id: this.$route.params.id,
       action: "",

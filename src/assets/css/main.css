@@ -443,6 +443,10 @@ label {
     border-radius: 5px;
 }
 
+.merchant--name {
+    text-transform: capitalize !important;
+}
+
 @media screen and (max-width: 425px) {
     .iconns {
         font-size: 6rem;
